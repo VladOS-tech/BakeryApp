@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  bakery: one
+  request_date: 2025-11-14
+
+two:
+  bakery: two
+  request_date: 2025-11-14
