@@ -1,16 +1,16 @@
-class PurchasesController < ApplicationController
+class WarehousesController < ApplicationController
   def index
-    purchases = Purchase.all
-    render json: purchases
+    warehouses = Warehouse.all
+    render json: warehouses
   end
 
   def show
-    warehouse = Purchase.find(params[:id])
+    warehouse = Warehouse.find(params[:id])
     render json: warehouse
   end
 
   def create
-    warehouse = Purchase.new(warehouse_params)
+    warehouse = Warehouse.new(warehouse_params)
     if warehouse.save
       render json: warehouse, status: :created
     else
@@ -19,7 +19,7 @@ class PurchasesController < ApplicationController
   end
 
   def update
-    warehouse = Purchase.find(params[:id])
+    warehouse = Warehouse.find(params[:id])
     if warehouse.update(warehouse_params)
       render json: warehouse
     else
@@ -28,7 +28,7 @@ class PurchasesController < ApplicationController
   end
 
   def destroy
-    warehouse = Purchase.find(params[:id])
+    warehouse = Warehouse.find(params[:id])
     warehouse.destroy
     head :no_content
   end
