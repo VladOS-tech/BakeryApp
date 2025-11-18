@@ -1,7 +1,11 @@
 class RequestsController < ApplicationController
   def index
-    requests = Request.all
-    render json: requests
+    if params[:bakery_id]
+      requests = Request.where(bakery_id: params[:bakery_id])
+    else
+      requests = Request.all
+    end
+    render json: requests.as_json(include: { request_items: { include: :product } })
   end
 
   def show

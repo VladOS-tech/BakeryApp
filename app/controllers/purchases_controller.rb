@@ -36,6 +36,6 @@ class PurchasesController < ApplicationController
   private
 
   def warehouse_params
-    params.require(:warehouse).permit(:name)
+    params.require(:warehouse).permit(:purchase_date)
   end
 end
