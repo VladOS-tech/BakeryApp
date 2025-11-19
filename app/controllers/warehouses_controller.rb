@@ -1,4 +1,6 @@
 class WarehousesController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
     warehouses = Warehouse.all
     render json: warehouses

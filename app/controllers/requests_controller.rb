@@ -1,11 +1,24 @@
 class RequestsController < ApplicationController
+  skip_before_action :verify_authenticity_token
+
   def index
-    if params[:bakery_id]
-      requests = Request.where(bakery_id: params[:bakery_id])
+    if params[:date]
+      @requests = Request.where(request_date: params[:date]).includes(request_items: :product).all
     else
-      requests = Request.all
+      @requests = Request.all.includes(request_items: :product)
     end
-    render json: requests.as_json(include: { request_items: { include: :product } })
+    render json: @requests.as_json(
+      include: {
+        request_items: {
+          include: {
+            product: {
+              include: :warehouse
+            }
+          }
+        },
+        bakery: {}
+      }
+    )
   end
 
   def show
