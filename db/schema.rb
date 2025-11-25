@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_14_081648) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_20_150733) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -18,6 +18,16 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_081648) do
     t.datetime "created_at", null: false
     t.string "name"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bakery_users", force: :cascade do |t|
+    t.bigint "bakery_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["bakery_id", "user_id"], name: "index_bakery_users_on_bakery_id_and_user_id", unique: true
+    t.index ["bakery_id"], name: "index_bakery_users_on_bakery_id"
+    t.index ["user_id"], name: "index_bakery_users_on_user_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -63,7 +73,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_081648) do
     t.datetime "created_at", null: false
     t.date "request_date"
     t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
     t.index ["bakery_id"], name: "index_requests_on_bakery_id"
+    t.index ["user_id"], name: "index_requests_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.string "password_digest", null: false
+    t.string "phone", null: false
+    t.string "role", default: "worker", null: false
+    t.datetime "updated_at", null: false
+    t.index ["phone"], name: "index_users_on_phone", unique: true
   end
 
   create_table "warehouses", force: :cascade do |t|
@@ -72,6 +94,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_081648) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "bakery_users", "bakeries"
+  add_foreign_key "bakery_users", "users"
   add_foreign_key "products", "warehouses"
   add_foreign_key "purchase_items", "products"
   add_foreign_key "purchase_items", "purchases"
@@ -79,4 +103,5 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_14_081648) do
   add_foreign_key "request_items", "products"
   add_foreign_key "request_items", "requests"
   add_foreign_key "requests", "bakeries"
+  add_foreign_key "requests", "users"
 end

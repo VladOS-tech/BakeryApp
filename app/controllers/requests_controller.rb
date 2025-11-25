@@ -1,6 +1,4 @@
 class RequestsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def index
     if params[:date]
       @requests = Request.where(request_date: params[:date]).includes(request_items: :product).all

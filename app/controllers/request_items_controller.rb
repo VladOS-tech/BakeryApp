@@ -1,6 +1,4 @@
 class RequestItemsController < ApplicationController
-  skip_before_action :verify_authenticity_token
-
   def index
     request_items = RequestItem.all
     render json: request_items

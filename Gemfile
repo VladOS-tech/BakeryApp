@@ -53,7 +53,11 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
   
-  gem 'rack-cors'
+  gem 'rack-cors', require: 'rack/cors'
+
+  gem 'bcrypt', '~> 3.1.7'
+
+  gem 'jwt'
 
 end
 
