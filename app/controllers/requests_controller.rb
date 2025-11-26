@@ -26,7 +26,12 @@ class RequestsController < ApplicationController
 
   def create
     request = Request.new(request_params)
+
     if request.save
+      audit!("request.create", request, {
+        bakery_id: request.bakery_id,
+        request_date: request.request_date
+      })
       render json: request, status: :created
     else
       render json: request.errors, status: :unprocessable_entity
@@ -35,7 +40,13 @@ class RequestsController < ApplicationController
 
   def update
     request = Request.find(params[:id])
+    old_attrs = request.attributes.slice("bakery_id", "request_date", "user_id")
+
     if request.update(request_params)
+      audit!("request.update", request, {
+        old: old_attrs,
+        new: request.attributes.slice("bakery_id", "request_date", "user_id")
+      })
       render json: request
     else
       render json: request.errors, status: :unprocessable_entity
@@ -44,6 +55,13 @@ class RequestsController < ApplicationController
 
   def destroy
     request = Request.find(params[:id])
+
+    audit!("request.destroy", request, {
+      bakery_id: request.bakery_id,
+      request_date: request.request_date,
+      user_id: request.user_id
+    })
+
     request.destroy
     head :no_content
   end

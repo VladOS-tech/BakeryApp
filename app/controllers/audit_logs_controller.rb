@@ -41,7 +41,7 @@ class AuditLogsController < ApplicationController
   private
 
   def require_boss!
-    unless current_user&.boss? # здесь твоя проверка роли начальника
+    unless current_user && current_user.role.in?(%w[manager]) # здесь твоя проверка роли начальника
       render json: { error: "Forbidden" }, status: :forbidden
     end
   end

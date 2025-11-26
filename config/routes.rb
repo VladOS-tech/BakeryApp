@@ -14,6 +14,8 @@ Rails.application.routes.draw do
   resources :purchase_items
   resources :users
 
+  resources :audit_logs, only: [ :index ]
+
   post "login", to: "sessions#create"
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
