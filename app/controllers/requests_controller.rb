@@ -51,6 +51,6 @@ class RequestsController < ApplicationController
   private
 
   def request_params
-    params.require(:request).permit(:bakery_id, :request_date)
+    params.require(:request).permit(:user_id, :bakery_id, :request_date)
   end
 end

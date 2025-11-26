@@ -18,5 +18,17 @@ class ApplicationController < ActionController::API
     end
   end
 
+  def audit!(action, subject, data = {})
+    return unless current_user
+
+    AuditLog.create!(
+      user: current_user,
+      action: action,
+      subject_type: subject.class.name,
+      subject_id: subject.id,
+      data: data
+    )
+  end
+
   # Changes to the importmap will invalidate the etag for HTML responses
 end

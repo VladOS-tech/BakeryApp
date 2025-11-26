@@ -10,9 +10,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_11_20_150733) do
+ActiveRecord::Schema[8.1].define(version: 2025_11_26_215616) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
+
+  create_table "audit_logs", force: :cascade do |t|
+    t.string "action"
+    t.datetime "created_at", null: false
+    t.jsonb "data"
+    t.integer "subject_id"
+    t.string "subject_type"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_audit_logs_on_user_id"
+  end
 
   create_table "bakeries", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -31,6 +42,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_150733) do
   end
 
   create_table "products", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.string "name"
     t.decimal "price", precision: 10, scale: 2, null: false
@@ -94,6 +106,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_11_20_150733) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "audit_logs", "users"
   add_foreign_key "bakery_users", "bakeries"
   add_foreign_key "bakery_users", "users"
   add_foreign_key "products", "warehouses"

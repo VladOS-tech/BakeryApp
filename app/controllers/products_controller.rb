@@ -1,6 +1,6 @@
 class ProductsController < ApplicationController
   def index
-    products = Product.all
+    products = Product.active
     render json: products
   end
 
@@ -29,8 +29,13 @@ class ProductsController < ApplicationController
 
   def destroy
     product = Product.find(params[:id])
-    product.destroy
-    head :no_content
+    if product.request_items.exists?
+      product.update(active: false)
+      head :no_content
+    else
+      product.destroy
+      head :no_content
+    end
   end
 
   private

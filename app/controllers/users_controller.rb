@@ -1,10 +1,9 @@
 class UsersController < ApplicationController
-  # Возможно, потребуется before_action для аутентификации и авторизации
-  skip_before_action :verify_authenticity_token
-
-
   def index
-    users = User.includes(:bakeries).all
+    users = User.includes(:bakeries)
+    if params[:role].present?
+      users = users.where(role: params[:role])
+    end
     render json: users.as_json(include: :bakeries)
   end
 
